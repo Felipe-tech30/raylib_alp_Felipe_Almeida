@@ -3,53 +3,51 @@
 int main()
 {
     float posX = -100;
-    float posX2 = -100;
-    float posX3 = -200;
-    float posY = -100;
+    
     Texture2D feliz;
-    Texture2D inimigo;
-    Texture2D luvaboxe;
+    Sound acerto;
+    Sound fundo;
     
     InitWindow (800, 450, "Meu Primeiro Game");
     
+    InitAudioDevice();
+    
+    
     feliz = LoadTexture ("feliz.png");
-    inimigo = LoadTexture ("inimigo.png");
-    luvaboxe = LoadTexture ("luvaboxe.png");
+    acerto = LoadSound ("acerto.mp3");
+    fundo = LoadSound ("fundo.ogg");
+    
+    PlaySound(fundo);
 
     while (!WindowShouldClose())
     {
-        posX += GetFrameTime () * 600;
-        posX2 += GetFrameTime () * 100;
-        posX3 += GetFrameTime () * 300;
-        posY += GetFrameTime () * 100;
+        posX += GetFrameTime () * 300;
         
        if (posX > 800)
        {
           posX = -100;
+          PlaySound(acerto);
        }
        
-       if (posX2 > 800){
-       posX2 = -100;}
-       
-       if (posX3 > 800){
-       posX3 = -200;}
-       
-       if (posY > 450){
-       posY = -100;}
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
         DrawTexture(feliz, posX, 10, WHITE);
-        DrawTexture(inimigo, posX2, 100, WHITE);
-        DrawTexture (luvaboxe, posX3, posY, WHITE);
+        
         
         DrawFPS (10, 10);
 
         EndDrawing();
     }
-
+    
+    UnloadSound (acerto);
+    
+    UnloadSound (fundo);
+    
+    CloseAudioDevice();
+    
     CloseWindow();
 
     return 0;
