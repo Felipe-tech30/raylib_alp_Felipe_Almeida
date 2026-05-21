@@ -2,25 +2,50 @@
 
 int main()
 {
+    float posX = -100;
+    float posX2 = -100;
+    float posX3 = -200;
+    float posY = -100;
     Texture2D feliz;
     Texture2D inimigo;
-
-    InitWindow(800, 450, "Meu Primeiro Game");
-
+    Texture2D luvaboxe;
+    
+    InitWindow (800, 450, "Meu Primeiro Game");
+    
     feliz = LoadTexture ("feliz.png");
     inimigo = LoadTexture ("inimigo.png");
+    luvaboxe = LoadTexture ("luvaboxe.png");
 
     while (!WindowShouldClose())
     {
-
+        posX += GetFrameTime () * 600;
+        posX2 += GetFrameTime () * 100;
+        posX3 += GetFrameTime () * 300;
+        posY += GetFrameTime () * 100;
+        
+       if (posX > 800)
+       {
+          posX = -100;
+       }
+       
+       if (posX2 > 800){
+       posX2 = -100;}
+       
+       if (posX3 > 800){
+       posX3 = -200;}
+       
+       if (posY > 450){
+       posY = -100;}
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        DrawTexture(feliz, 10, 10, WHITE);
-        DrawTexture(inimigo, 200, 30, RED);
+        DrawTexture(feliz, posX, 10, WHITE);
+        DrawTexture(inimigo, posX2, 100, WHITE);
+        DrawTexture (luvaboxe, posX3, posY, WHITE);
         
+        DrawFPS (10, 10);
 
         EndDrawing();
     }
