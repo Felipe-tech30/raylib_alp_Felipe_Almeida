@@ -2,23 +2,25 @@
 
 int main()
 {
-    int posX = 0;
+    Texture2D feliz;
+    Texture2D inimigo;
 
     InitWindow(800, 450, "Meu Primeiro Game");
 
-    SetTargetFPS(30);
+    feliz = LoadTexture ("feliz.png");
+    inimigo = LoadTexture ("inimigo.png");
 
     while (!WindowShouldClose())
     {
-        posX++;
+
 
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        DrawRectangle(posX, 100, 100, 100, RED);
+        DrawTexture(feliz, 10, 10, WHITE);
+        DrawTexture(inimigo, 200, 30, RED);
         
-        DrawFPS(10, 10);
 
         EndDrawing();
     }
