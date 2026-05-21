@@ -1,50 +1,111 @@
+#include <stdio.h> 
 #include "raylib.h"
 
 int main()
 {
-    float posX = -100;
     
+    Texture2D inimigo;
     Texture2D feliz;
+    Sound explosao;
+    Sound tiro;
     Sound acerto;
-    Sound fundo;
+    Music fundo;
     
     InitWindow (800, 450, "Meu Primeiro Game");
     
     InitAudioDevice();
     
     
+    inimigo = LoadTexture ("inimigo.png");
     feliz = LoadTexture ("feliz.png");
+    tiro  = LoadSound ("tiro.mp3");
+    fundo = LoadMusicStream("fundo.ogg");
+    explosao = LoadSound ("explosao.mp3");
     acerto = LoadSound ("acerto.mp3");
-    fundo = LoadSound ("fundo.ogg");
     
-    PlaySound(fundo);
+    float posX = -inimigo.width;
+    float posY = -inimigo.width;
+    
+    float posX2 = -feliz.width;
+    float posY2 = -feliz.width;
+    
+    PlayMusicStream(fundo);
+    
 
     while (!WindowShouldClose())
     {
-        posX += GetFrameTime () * 300;
+        UpdateMusicStream(fundo);
         
-       if (posX > 800)
-       {
-          posX = -100;
-          PlaySound(acerto);
+        posX += GetFrameTime () * 500;
+        posY += GetFrameTime () * 300;
+        
+        posX2 += GetFrameTime () * 20;
+        posY2 += GetFrameTime () * 20;
+        
+       if (posX > 800){
+       posX = -inimigo.width;}
+       
+       if(posY > 450){
+       posY = -inimigo.width;}
+       
+       if(posX2 > 800){
+       posX2 = -feliz.width;}
+       
+       if(posY2 > 450){
+       posY2 = -feliz.width;}
+       
+       if (IsKeyPressed(KEY_SPACE)){
+           StopMusicStream (fundo);
+           PlayMusicStream (fundo);
+           PlaySound (explosao); //Aperte espaço para usar o som da explosão
        }
        
-
+       if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+       {
+           Rectangle spriteRect = {
+           posX, posY, inimigo.width, inimigo.height};
+           
+           if (CheckCollisionPointRec(GetMousePosition(), spriteRect)){
+           PlaySound(tiro);
+           }
+       }
+       
+       if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
+       {
+           Rectangle spriteRect2 = {
+           posX2, posY2, feliz.width, feliz.height};
+           
+       if (CheckCollisionPointRec(GetMousePosition(), spriteRect2)){
+           PlaySound(acerto);
+       }
+       }
+       
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        DrawTexture(feliz, posX, 10, WHITE);
+        DrawTexture(inimigo, posX, posY, WHITE);
+        DrawCircle(posX, posY, 1, RED);
+        
+        DrawTexture(feliz, posX2, posY2, WHITE);
+        DrawCircle(posX2, posY2, 1, GREEN);
         
         
         DrawFPS (10, 10);
 
         EndDrawing();
     }
+    UnloadTexture(inimigo);
+    
+    UnloadTexture(feliz);
+    
+    UnloadSound (tiro);
+    
+    UnloadSound (explosao);
     
     UnloadSound (acerto);
     
-    UnloadSound (fundo);
+    UnloadMusicStream (fundo);
     
     CloseAudioDevice();
     
