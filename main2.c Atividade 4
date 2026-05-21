@@ -3,22 +3,23 @@
 int main()
 {
     int posX = 0;
-    
-    InitWindow(800, 600, "Meu Primeiro Game");
+
+    InitWindow(800, 450, "Meu Primeiro Game");
+
+    SetTargetFPS(30);
 
     while (!WindowShouldClose())
     {
         posX++;
+
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
         DrawRectangle(posX, 100, 100, 100, RED);
         
-        if (posX > 800){
-            posX = 0;
-        }
-        
+        DrawFPS(10, 10);
+
         EndDrawing();
     }
 
